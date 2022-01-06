@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { serverURL } from "../utils/constants"
 
 export default function UserReadingList(props) {
     const [newRead, setNewRead] = useState([])
@@ -7,12 +8,6 @@ export default function UserReadingList(props) {
     console.log("reader: ", newRead)
 
     const navigate = useNavigate()
-
-    const { reading } = props
-
-    const { serverURL } = require('../utils/constants')
-
-    console.log("reading on the new page", reading)
 
     useEffect(() => {
         fetch(serverURL)
@@ -27,9 +22,9 @@ export default function UserReadingList(props) {
         <>
         <ul>
             <h2>Reading list</h2>
-            {newRead.map((book) => {
+            {newRead.map((book, index) => {
                 return(
-                    <li>
+                    <li key={index}>
                         <h3>Title: {book.title}</h3>
                         <p>Authors: {book.authors}</p>
                         <p>Publisher: {book.publisher}</p>

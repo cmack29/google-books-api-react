@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect } from "react/cjs/react.development"
+import { key } from '../utils/constants'
+import { serverURL } from '../utils/constants'
 
 
 export default function ReadingList(props) {
@@ -10,8 +12,6 @@ export default function ReadingList(props) {
 
     const navigate = useNavigate()
 
-    const { serverURL } = require('../utils/constants')
-
     const {bookId} = useParams()
     const foundBook = booksData.find((book) => {
 
@@ -19,8 +19,6 @@ export default function ReadingList(props) {
     })
 
     console.log("found book: ", foundBook)
-
-    const { key } = require('../utils/constants')
 
     useEffect(() => {
         fetch(`https://www.googleapis.com/books/v1/volumes/${foundBook.id}?key=${key}`)
@@ -31,8 +29,6 @@ export default function ReadingList(props) {
             setNewBook(readingBooks)
         })
     },[])
-
-    console.log("new book", newBook)
 
     const handleBook = event => {
         event.preventDefault()
@@ -62,8 +58,6 @@ export default function ReadingList(props) {
             navigate('/users-reading-list')
         })
     }
-    // console.log("reading: ", reading)
-
 
     return(
         <>

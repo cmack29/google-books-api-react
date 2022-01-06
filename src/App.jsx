@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Books from "./components/Books";
 import ReadingList from "./components/ReadingList";
 import UserReadingList from "./components/UserReadingList";
 import "./styles.css";
+import { key } from "./utils/constants";
+import { serverURL } from "./utils/constants";
 
 
 export default function App() {
@@ -12,19 +14,14 @@ export default function App() {
   const [userInput, setUserInput] = useState("")
   const [selectedState, setSelectedState] = useState("")
 
-  const { key } = require('./utils/constants')
-
   const searchUrl = `https://www.googleapis.com/books/v1/volumes?q=${userInput}+inauthor:keyes&key=${key}`
-
-  const { serverURL } = require('./utils/constants')
-
 
   useEffect(() => {
     if (userInput !== "") {
       fetch(searchUrl)
       .then((res) => res.json())
       .then((books) => {
-        // console.log("api books: ", books)
+        console.log("bkk", books)
 
         setBooksData(books.items)
       })
@@ -35,7 +32,6 @@ export default function App() {
     fetch(serverURL)
     .then((res) => res.json())
     .then((books) => {
-      // console.log("db books: ", books)
       setReading(books)
     })
   }, [])
@@ -45,19 +41,13 @@ export default function App() {
   console.log("booksData: ", booksData)
 
   const handleUserInput = (event) => {
-    // console.log("Inside handleNameInput: ", event.target.value);
     event.preventDefault()
 
     setUserInput(event.target.value);
   };
 
   const handleStateSubmit = (event) => {
-    // console.log("Inside handleStateSubmit: ", handleStateSubmit);
     event.preventDefault();
-
-    // console.log(
-    //   "Inside handleSelectStateForm: ",
-    //   event.target["select-state"].value)
 
       const selectedStateInputClean = selectedStateInput
       .toLowerCase()
@@ -69,13 +59,13 @@ export default function App() {
 
 
   return (
-    <>
+    <React.Fragment>
     <Routes>
-      <Route path="/" element={<Books
+      <Route exact path="/" element={<Books
        booksData={booksData} 
        reading={reading} 
        setReading={setReading}
-       serverUrl={serverUrl}
+       serverUrl={serverURL}
        userInput={userInput}
        setUserInput={setUserInput}
        handleUserInput={handleUserInput}
@@ -85,9 +75,9 @@ export default function App() {
        booksData={booksData}
        setReading={setReading}  />} />
        <Route path="/users-reading-list" element={<UserReadingList
-       reading={reading} />} />
+       reading={reading} 
+       />} />
     </Routes>
-
-    </>
+    </React.Fragment>
   );
 }
