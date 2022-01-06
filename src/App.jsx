@@ -21,7 +21,6 @@ export default function App() {
       fetch(searchUrl)
       .then((res) => res.json())
       .then((books) => {
-        console.log("bkk", books)
 
         setBooksData(books.items)
       })
